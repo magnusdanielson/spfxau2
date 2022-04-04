@@ -1,0 +1,16 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.14.0",
+    "libraryName": "spfxau-2",
+    "libraryId": "61496b05-48cf-48be-a2ec-4bab31c301d7",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "spfxau-2",
+    "solutionShortDescription": "spfxau-2 description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
