@@ -36,29 +36,19 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
 
     try
     {
-      //au.register(StandardConfiguration)
-      //.register(<any>MyComponent)
-      //.start();
      
-      Aurelia.register(<any>MyComponent)
-  .app(MyComponent)
-  .start();
-  // var host = document.getElementById(this.instanceId);
-  // Aurelia
-  // .enhance({
-  //   host: document.getElementById(this.instanceId),
-  //   component: MyComponent
-  // })
+  //     Aurelia.register(<any>MyComponent)
+  // .app(MyComponent)
   // .start();
-  // const au = new Aurelia();
-  // au.register(<any>MyComponent)
-  // await au.enhance({
-  //     host: document.getElementById(this.instanceId),
-  //     component: MyComponent,
-  // });
-  //await au.start();
-    
-        //await au.enhance({ host, component: MyComponent });
+
+
+  new Aurelia().register(<any>MyComponent)
+  .app({
+    component: MyComponent,
+    host: document.querySelector('my-component')}
+  )
+  .start();
+
     }
     catch(error)
     {
