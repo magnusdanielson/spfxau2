@@ -19,20 +19,23 @@ build.configureWebpack.mergeConfig({
   additionalConfiguration: (generatedConfiguration) => {
     console.log(generatedConfiguration);
     
-    console.log("test");
+    //console.log("test");
     console.log(generatedConfiguration.module.rules[4]);
 
-    generatedConfiguration.module.rules.splice(4,1);
+    //generatedConfiguration.module.rules.splice(4,1);
 
     // [/\\]src[/\\].+
-    var rule1 = { test:  /\.html$/i, use: '@aurelia/webpack-loader', exclude: /node_modules/} ;
+    var rule1 = { test: /[/\\]src[/\\].+\.html$/i, use: '@aurelia/webpack-loader', exclude: /node_modules/} ;
     generatedConfiguration.module.rules.push(rule1)
 
     var rule2 = { test: /\.ts$/i, use: ['ts-loader', '@aurelia/webpack-loader'], exclude: /node_modules/  };
     generatedConfiguration.module.rules.push(rule2);
 
-    generatedConfiguration.module.rules.forEach( v => console.log(v));
+    //generatedConfiguration.module.rules.forEach( v => console.log(v));
 
+    generatedConfiguration.stats = {
+      all: undefined,
+    };
     
     return generatedConfiguration;
   }

@@ -1,11 +1,13 @@
 import { PartialCustomElementDefinition } from '@aurelia/runtime-html';
 import {customElement} from 'aurelia';
 
+// I would like to not need line 5-9
+import html from "./mycomponent.html";
 @customElement(<PartialCustomElementDefinition>{
-    template: '<template>Hello from the inline view<div class="message">${message}</div></template>',
-    name: 'my-component'
+    template: html,
+    name: 'mycomponent'
   })
-export class MyComponent
+export class mycomponent
 {
     public message = 'Hello World!';
 }

@@ -11,7 +11,7 @@ import styles from './HelloWorldWebPart.module.scss';
 import * as strings from 'HelloWorldWebPartStrings';
 import Aurelia from 'aurelia';
 import { StandardConfiguration} from '@aurelia/runtime-html';
-import { MyComponent } from './my-component';
+import { mycomponent } from './mycomponent';
 
 
 export interface IHelloWorldWebPartProps {
@@ -30,7 +30,7 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
   }
 
   public async render() {
-    this.domElement.innerHTML = `<my-component></mycomponent>`;
+    this.domElement.innerHTML = `<mycomponent></mycomponent>`;
 
     //var au = new Aurelia();
 
@@ -42,10 +42,11 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
   // .start();
 
 
-  new Aurelia().register(<any>MyComponent)
+  var au = new Aurelia();
+  au.register(<any>mycomponent)
   .app({
-    component: MyComponent,
-    host: document.querySelector('my-component')}
+    component: mycomponent,
+    host: document.querySelector('mycomponent')}
   )
   .start();
 
