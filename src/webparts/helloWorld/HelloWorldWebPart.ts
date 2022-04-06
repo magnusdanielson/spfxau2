@@ -39,8 +39,8 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
     try {
 
       var au = new Aurelia();
-      au.register(<any>mycomponent).
-        register(<any>other)
+      au.register(<any>mycomponent)
+        .register(<any>other)
         .app({
           component: mycomponent,
           host: document.querySelector('mycomponent')
