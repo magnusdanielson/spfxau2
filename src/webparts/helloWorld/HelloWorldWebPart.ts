@@ -10,8 +10,9 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import styles from './HelloWorldWebPart.module.scss';
 import * as strings from 'HelloWorldWebPartStrings';
 import Aurelia from 'aurelia';
-import { StandardConfiguration} from '@aurelia/runtime-html';
+import { StandardConfiguration } from '@aurelia/runtime-html';
 import { mycomponent } from './mycomponent';
+import { other } from './other';
 
 
 export interface IHelloWorldWebPartProps {
@@ -29,34 +30,34 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
     return super.onInit();
   }
 
+  // This is the interesting part, above you can ignore
   public async render() {
+
+    // This line renders the html on tha page
     this.domElement.innerHTML = `<mycomponent></mycomponent>`;
 
-    //var au = new Aurelia();
+    try {
 
-    try
-    {
-     
-  //     Aurelia.register(<any>MyComponent)
-  // .app(MyComponent)
-  // .start();
-
-
-  var au = new Aurelia();
-  au.register(<any>mycomponent)
-  .app({
-    component: mycomponent,
-    host: document.querySelector('mycomponent')}
-  )
-  .start();
-
+      var au = new Aurelia();
+      au.register(<any>mycomponent).
+        register(<any>other)
+        .app({
+          component: mycomponent,
+          host: document.querySelector('mycomponent')
+        })
+        .start();
     }
-    catch(error)
-    {
+    catch (error) {
       console.log(error);
     }
-  
   }
+// You can ignore anything below this line
+
+
+
+
+
+
 
   private _getEnvironmentMessage(): string {
     if (!!this.context.sdks.microsoftTeams) { // running in Teams
