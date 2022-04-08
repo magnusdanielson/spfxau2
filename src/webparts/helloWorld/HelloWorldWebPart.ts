@@ -33,7 +33,7 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
   // This is the interesting part, above you can ignore
   public async render() {
 
-    // This line renders the html on tha page
+    // This line renders the html on the page
     this.domElement.innerHTML = `<my-component></my-component>`;
 
     try {
