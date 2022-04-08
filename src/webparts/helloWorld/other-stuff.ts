@@ -1,11 +1,11 @@
 // import { PartialCustomElementDefinition } from '@aurelia/runtime-html';
 // import {customElement} from 'aurelia';
-// import html from "./other.html";
+// import html from "./other-stuff.html";
 // @customElement(<PartialCustomElementDefinition>{
 //     template: html,
 //     name: 'other'
 //   })
-  export class other
+  export class OtherStuff
 {
     public text:string = "other text";
 }

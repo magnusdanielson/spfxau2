@@ -11,8 +11,8 @@ import styles from './HelloWorldWebPart.module.scss';
 import * as strings from 'HelloWorldWebPartStrings';
 import Aurelia from 'aurelia';
 import { StandardConfiguration } from '@aurelia/runtime-html';
-import { mycomponent } from './mycomponent';
-import { other } from './other';
+import { MyComponent } from './my-component';
+import { OtherStuff } from './other-stuff';
 
 
 export interface IHelloWorldWebPartProps {
@@ -34,16 +34,16 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
   public async render() {
 
     // This line renders the html on tha page
-    this.domElement.innerHTML = `<mycomponent></mycomponent>`;
+    this.domElement.innerHTML = `<my-component></my-component>`;
 
     try {
 
       var au = new Aurelia();
-      au.register(<any>mycomponent)
-        .register(<any>other)
+      au.register(<any>MyComponent)
+        .register(<any>OtherStuff)
         .app({
-          component: mycomponent,
-          host: document.querySelector('mycomponent')
+          component: MyComponent,
+          host: document.querySelector('my-component')
         })
         .start();
     }

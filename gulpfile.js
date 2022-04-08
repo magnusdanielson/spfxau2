@@ -24,11 +24,31 @@ build.configureWebpack.mergeConfig({
     // remove the existing -html loader
     generatedConfiguration.module.rules.splice(4,1);
 
-    var rule1 = { test: /\.html$/i, use: '@aurelia/webpack-loader', exclude: /node_modules/ } ;
+    var rule2 = { test: /\.ts$/i, use: [{
+      loader: "inspect-loader",
+      options: {
+          callback(inspect) {
+               console.log(inspect.arguments);
+               console.log(inspect.context);
+               console.log(inspect.options);
+          }
+      }
+  },'ts-loader', '@aurelia/webpack-loader'], exclude: /node_modules/ };
+    generatedConfiguration.module.rules.push(rule2);
+
+    var rule1 = { test: /\.html$/i, use:[{
+      loader: "inspect-loader",
+      options: {
+          callback(inspect) {
+               console.log(inspect.arguments);
+               console.log(inspect.context);
+               console.log(inspect.options);
+          }
+      }
+  }, '@aurelia/webpack-loader'], exclude: /node_modules/ } ;
     generatedConfiguration.module.rules.push(rule1)
 
-    var rule2 = { test: /\.ts$/i, use: ['ts-loader', '@aurelia/webpack-loader'], exclude: /node_modules/ };
-    generatedConfiguration.module.rules.push(rule2);
+    
 
     //var rule3 = { test: /\.js$/i, use: ['@aurelia/webpack-loader'], exclude: /node_modules/  };
     //generatedConfiguration.module.rules.push(rule3);
