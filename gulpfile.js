@@ -1,5 +1,8 @@
 'use strict';
+const through = require('through2')
 
+
+var pluginConventions = require('@aurelia/plugin-conventions');
 const build = require('@microsoft/sp-build-web');
 const path = require('path');
 build.addSuppression(`Warning - [sass] The local CSS class 'ms-Grid' is not camelCase and will not be type-safe.`);
@@ -16,6 +19,20 @@ build.rig.getTasks = function () {
 
 
 let bumpRevisionSubTask = build.subTask('bump-revision-subtask', function(gulp, buildOptions, done) {
+
+  const options = {};
+  /*
+options
+{}
+  */
+ 
+
+  const _preprocess = pluginConventions.preprocess;
+
+  //resourcePath
+//C:\GitProjects\spfxau2\lib\webparts\helloWorld\HelloWorldWebPart.js
+
+  
   // var pkgSolution = getJson('./config/package-solution.json');
   // var oldVersionNumber = String(pkgSolution.solution.version);
   // gutil.log('Old Version: ' + oldVersionNumber);
@@ -27,9 +44,17 @@ let bumpRevisionSubTask = build.subTask('bump-revision-subtask', function(gulp, 
   // gutil.log('New Version: ' + newVersionNumber);
   // pkgSolution.solution.version = newVersionNumber;
   // fs.writeFile('./config/package-solution.json', JSON.stringify(pkgSolution, null, 4));
-  console.log("bump");
-  return gulp.src('./config/package-solution.json')
-  .pipe(gulp.dest('./config'))
+
+
+  return gulp.src('./src/**/*.ts')
+  .pipe(through.obj((file, enc, cb) => {
+    //console.log('chunk', file); // this should log now
+    var result = _preprocess({ path: file.path, contents: file.contents.toString() }, pluginConventions.preprocessOptions(options || {}));
+    console.log(result);
+    file.contents = Buffer.from( result.code);
+    cb(null, file)
+  })).pipe(gulp.dest("dist2"));
+
 });
 
 let bumpRevisionTask = build.task('bump-revision', bumpRevisionSubTask);

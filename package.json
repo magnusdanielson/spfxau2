@@ -28,6 +28,7 @@
     "gulp": "~4.0.2",
     "gulp-inject": "^5.0.5",
     "inspect-loader": "^2.0.0",
+    "through2": "^4.0.2",
     "ts-loader": "^8.2.0"
   }
 }
