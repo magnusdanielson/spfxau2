@@ -1,5 +1,8 @@
 'use strict';
+const through = require('through2')
+const gulp = require('gulp');
 
+var pluginConventions = require('@aurelia/plugin-conventions');
 const build = require('@microsoft/sp-build-web');
 const path = require('path');
 build.addSuppression(`Warning - [sass] The local CSS class 'ms-Grid' is not camelCase and will not be type-safe.`);
@@ -13,49 +16,30 @@ build.rig.getTasks = function () {
   return result;
 };
 
-build.initialize(require('gulp'));
 
 
-// This is the configuration I have added to adapt for Aurelia
-build.configureWebpack.mergeConfig({
-  additionalConfiguration: (generatedConfiguration) => {
+let aureliaConventionSubTask = build.subTask('aurelia-convention-subtask', function(gulp, buildOptions, done) {
 
-    console.log(generatedConfiguration.module.rules[4]);
-    // remove the existing -html loader
-    generatedConfiguration.module.rules.splice(4,1);
+  const options = {};
+ 
 
-    var rule2 = { test: /\.ts$/i, use: [{
-      loader: "inspect-loader",
-      options: {
-          callback(inspect) {
-               console.log(inspect.arguments);
-               console.log(inspect.context);
-               console.log(inspect.options);
-          }
-      }
-  },'ts-loader', '@aurelia/webpack-loader'], exclude: /node_modules/ };
-    generatedConfiguration.module.rules.push(rule2);
-
-    var rule1 = { test: /\.html$/i, use:[{
-      loader: "inspect-loader",
-      options: {
-          callback(inspect) {
-               console.log(inspect.arguments);
-               console.log(inspect.context);
-               console.log(inspect.options);
-          }
-      }
-  }, '@aurelia/webpack-loader'], exclude: /node_modules/ } ;
-    generatedConfiguration.module.rules.push(rule1)
-
-    
-
-    //var rule3 = { test: /\.js$/i, use: ['@aurelia/webpack-loader'], exclude: /node_modules/  };
-    //generatedConfiguration.module.rules.push(rule3);
-
-    generatedConfiguration.module.rules.forEach( v => console.log(v));
-
-    console.log(generatedConfiguration);
-    return generatedConfiguration;
-  }
+  const _preprocess = pluginConventions.preprocess;
+  return gulp.src('./src/**/*.*')
+  .pipe(through.obj((file, enc, cb) => {
+    if(file.path.endsWith('.ts'))
+    {
+      var result = _preprocess({ path: file.path, contents: file.contents.toString() }, pluginConventions.preprocessOptions(options || {}));
+      //console.log(file.path);
+    // result.code
+    // result.map
+      file.contents = Buffer.from( result.code);
+    }
+    cb(null, file)
+  })).pipe(gulp.dest("autemp"));
 });
+
+let aureliaConvention = build.task('aurelia-convention', aureliaConventionSubTask);
+
+build.rig.addPreBuildTask(aureliaConvention);
+
+build.initialize(require('gulp'));

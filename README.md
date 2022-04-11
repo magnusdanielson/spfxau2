@@ -1,5 +1,15 @@
 # spfxau-2
 
+## To make it work
+
+Replace line ca 145 in node_modules\@aurelia\plugin-conventions\dist\cjs\index.js
+
+conventionalDecorators.push([implicitElement.pos, `@${dec}(${viewDef})\n`]);
+
+with 
+
+conventionalDecorators.push([implicitElement.pos, `@${dec}({name: '${expectedResourceName}', template: ${viewDef}.toString()})\n`]);
+
 ## Summary
 
 Short summary on functionality and used technologies.

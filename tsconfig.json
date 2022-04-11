@@ -1,7 +1,8 @@
 {
   "extends": "./node_modules/@microsoft/rush-stack-compiler-3.9/includes/tsconfig-web.json",
   "compilerOptions": {
-    "target": "es5",
+    "rootDir": "autemp",
+    "target": "esnext",
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
@@ -22,14 +23,14 @@
       "webpack-env"
     ],
     "lib": [
-      "es5",
+      "es6",
       "dom",
       "es2015.collection",
       "es2015.promise"
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
+    "autemp/**/*.ts",
+    "autemp/**/*.tsx"
   ]
 }

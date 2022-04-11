@@ -12,8 +12,8 @@ import * as strings from 'HelloWorldWebPartStrings';
 import Aurelia from 'aurelia';
 import { StandardConfiguration } from '@aurelia/runtime-html';
 import { MyComponent } from './my-component';
-import { OtherStuff } from './other-stuff';
-
+import { OtherStuffCustomElement } from './other-stuff';
+import { MoreStuff } from './more-stuff';
 
 export interface IHelloWorldWebPartProps {
   description: string;
@@ -40,7 +40,8 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
 
       var au = new Aurelia();
       au.register(<any>MyComponent)
-        .register(<any>OtherStuff)
+        .register(<any>OtherStuffCustomElement)
+        .register(<any>MoreStuff)
         .app({
           component: MyComponent,
           host: document.querySelector('my-component')
