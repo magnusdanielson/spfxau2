@@ -1,6 +1,6 @@
 'use strict';
 const through = require('through2')
-
+const gulp = require('gulp');
 
 var pluginConventions = require('@aurelia/plugin-conventions');
 const build = require('@microsoft/sp-build-web');
@@ -46,14 +46,22 @@ options
   // fs.writeFile('./config/package-solution.json', JSON.stringify(pkgSolution, null, 4));
 
 
-  return gulp.src('./src/**/*.ts')
+  return gulp.src('./src/**/*.*')
   .pipe(through.obj((file, enc, cb) => {
     //console.log('chunk', file); // this should log now
-    var result = _preprocess({ path: file.path, contents: file.contents.toString() }, pluginConventions.preprocessOptions(options || {}));
-    console.log(result);
-    file.contents = Buffer.from( result.code);
+
+    if(file.path.endsWith('.ts'))
+    {
+      var result = _preprocess({ path: file.path, contents: file.contents.toString() }, pluginConventions.preprocessOptions(options || {}));
+      console.log(file.path);
+    // result.code
+    // result.map
+      file.contents = Buffer.from( result.code);
+    }
+    
     cb(null, file)
-  })).pipe(gulp.dest("dist2"));
+  }))
+  .pipe(gulp.dest("./autemp"));
 
 });
 
@@ -61,7 +69,7 @@ let bumpRevisionTask = build.task('bump-revision', bumpRevisionSubTask);
 
 build.rig.addPreBuildTask(bumpRevisionTask);
 
-build.initialize(require('gulp'));
+build.initialize(gulp);
 
 
 // This is the configuration I have added to adapt for Aurelia

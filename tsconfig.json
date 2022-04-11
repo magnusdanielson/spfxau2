@@ -1,6 +1,7 @@
 {
   "extends": "./node_modules/@microsoft/rush-stack-compiler-3.9/includes/tsconfig-web.json",
   "compilerOptions": {
+    
     "target": "esnext",
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
@@ -26,10 +27,11 @@
       "dom",
       "es2015.collection",
       "es2015.promise"
-    ]
+    ],
+    "rootDir": "autemp"
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
+    "autemp/**/*.ts",
+    "autemp/**/*.tsx"
   ]
 }
