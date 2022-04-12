@@ -13,7 +13,7 @@ import Aurelia from 'aurelia';
 import { StandardConfiguration } from '@aurelia/runtime-html';
 import { MyComponent } from './my-component';
 import { OtherStuffCustomElement } from './other-stuff';
-import { MoreStuff } from './more-stuff';
+//import { MoreStuff } from './more-stuff';
 
 export interface IHelloWorldWebPartProps {
   description: string;
@@ -24,6 +24,7 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
+  //private styles = styles;
   protected onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
 
@@ -33,6 +34,7 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
   // This is the interesting part, above you can ignore
   public async render() {
     // This line renders the html on the page
+    //this.domElement.innerHTML = `<my-component class="${styles.helloWorld}"></my-component>`;
     this.domElement.innerHTML = `<my-component></my-component>`;
 
     try {
@@ -40,7 +42,7 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
       var au = new Aurelia();
       au.register(<any>MyComponent)
         .register(<any>OtherStuffCustomElement)
-        .register(<any>MoreStuff)
+      //  .register(<any>MoreStuff)
         .app({
           component: MyComponent,
           host: document.querySelector('my-component')

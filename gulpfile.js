@@ -19,7 +19,11 @@ let aureliaGulpConventionSubTask = build.subTask('aurelia-gulp-subtask', functio
   .pipe(au2gulp()).pipe(gulp.dest("autemp")).on('finish', ()=>
   {
     gulp.src('src/**/*.html')
-    .pipe(au2gulp()).pipe(gulp.dest("lib")).on('finish', () => done());
+    .pipe(au2gulp()).pipe(gulp.dest("lib")).on('finish', () => 
+    {
+      gulp.src('autemp/**/*.css')
+      .pipe(gulp.dest("lib")).on('finish', () => done());
+    });  
   });  
 });
 let aureliaConvention = build.task('aurelia-convention', aureliaGulpConventionSubTask);
@@ -28,8 +32,10 @@ aureliaConvention.getCleanMatch = (config) =>
   return ['autemp'];
 };
 build.rig.addPreBuildTask(aureliaConvention);
-
+//build.sass.mergeConfig({});
 build.initialize(gulp);
+//console.log("build");
+
 
 build.configureWebpack.mergeConfig({
   additionalConfiguration: (generatedConfiguration) => {

@@ -2,14 +2,16 @@
 
 ## To make it work
 
-Replace line ca 145 in node_modules\@aurelia\plugin-conventions\dist\cjs\index.js
 
-conventionalDecorators.push([implicitElement.pos, `@${dec}(${viewDef})\n`]);
+Replace line ca 67 in node_modules\@microsoft\gulp-core-build-sass\lib\SassTask.js
 
-with 
+// Dunite
+//cssOutputPath = path.join(this.buildConfig.libFolder, srcRelativePath);
 
-conventionalDecorators.push([implicitElement.pos, `@${dec}({name: '${expectedResourceName}', template: ${viewDef}.toString()})\n`]);
+with
 
+cssOutputPath = path.join('autemp', srcRelativePath);
+            
 ## Summary
 
 Short summary on functionality and used technologies.

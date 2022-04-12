@@ -1,5 +1,9 @@
 {
     "excludeExtensions": [
         "html"
+    ],
+    "includeExtensions":
+    [
+        "css"
     ]
 }
