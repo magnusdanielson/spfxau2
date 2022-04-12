@@ -30,7 +30,6 @@
     ]
   },
   "include": [
-    "autemp/**/*.ts",
-    "autemp/**/*.tsx"
+    "autemp/**/*"
   ]
 }

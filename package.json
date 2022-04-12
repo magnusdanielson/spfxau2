@@ -14,11 +14,12 @@
     "@microsoft/sp-office-ui-fabric-core": "1.14.0",
     "@microsoft/sp-property-pane": "1.14.0",
     "@microsoft/sp-webpart-base": "1.14.0",
-    "aurelia": "^2.0.0-alpha.26",
+    "aurelia": "^2.0.0-alpha.27",
     "webpack": "^4.44.2"
   },
   "devDependencies": {
-    "@aurelia/webpack-loader": "^2.0.0-alpha.26",
+    "@aurelia/plugin-gulp": "^2.0.0-alpha.27",
+    "@aurelia/webpack-loader": "^2.0.0-alpha.27",
     "@microsoft/rush-stack-compiler-3.9": "0.4.47",
     "@microsoft/sp-build-web": "1.14.0",
     "@microsoft/sp-module-interfaces": "1.14.0",

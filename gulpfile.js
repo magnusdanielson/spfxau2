@@ -1,10 +1,8 @@
 'use strict';
-const through = require('through2')
 const gulp = require('gulp');
-
-var pluginConventions = require('@aurelia/plugin-conventions');
+const au2gulp = require('@aurelia/plugin-gulp').default;
 const build = require('@microsoft/sp-build-web');
-const path = require('path');
+
 build.addSuppression(`Warning - [sass] The local CSS class 'ms-Grid' is not camelCase and will not be type-safe.`);
 
 var getTasks = build.rig.getTasks;
@@ -16,30 +14,47 @@ build.rig.getTasks = function () {
   return result;
 };
 
-
-
-let aureliaConventionSubTask = build.subTask('aurelia-convention-subtask', function(gulp, buildOptions, done) {
-
-  const options = {};
- 
-
-  const _preprocess = pluginConventions.preprocess;
-  return gulp.src('./src/**/*.*')
-  .pipe(through.obj((file, enc, cb) => {
-    if(file.path.endsWith('.ts'))
-    {
-      var result = _preprocess({ path: file.path, contents: file.contents.toString() }, pluginConventions.preprocessOptions(options || {}));
-      //console.log(file.path);
-    // result.code
-    // result.map
-      file.contents = Buffer.from( result.code);
-    }
-    cb(null, file)
-  })).pipe(gulp.dest("autemp"));
+let aureliaGulpConventionSubTask = build.subTask('aurelia-gulp-subtask', function(gulp, buildOptions, done) {
+  gulp.src('./src/**/*.ts')
+  .pipe(au2gulp()).pipe(gulp.dest("autemp")).on('finish', ()=>
+  {
+    gulp.src('src/**/*.html')
+    .pipe(au2gulp()).pipe(gulp.dest("lib")).on('finish', () => done());
+  });  
 });
-
-let aureliaConvention = build.task('aurelia-convention', aureliaConventionSubTask);
-
+let aureliaConvention = build.task('aurelia-convention', aureliaGulpConventionSubTask);
+aureliaConvention.getCleanMatch = (config) =>
+{
+  return ['autemp'];
+};
 build.rig.addPreBuildTask(aureliaConvention);
 
-build.initialize(require('gulp'));
+build.initialize(gulp);
+
+build.configureWebpack.mergeConfig({
+  additionalConfiguration: (generatedConfiguration) => {
+    //generatedConfiguration.module.rules.splice(4,1);
+
+    // Remove .html rule, generally with index 4
+    var filtered = generatedConfiguration.module.rules.filter(function(rule, index, arr)
+    { 
+      if(typeof rule.test.source == "string")
+      {
+        if(rule.test.source.includes('.html'))
+        {
+          return true
+        }
+      }
+      return false;
+    });
+
+    filtered.forEach( (rule)=>
+    {
+      var index = generatedConfiguration.module.rules.indexOf(rule);
+      generatedConfiguration.module.rules.splice(index,1);
+    });
+
+    return generatedConfiguration;
+  }
+
+});
