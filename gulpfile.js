@@ -2,7 +2,7 @@
 const gulp = require('gulp');
 const au2gulp = require('@aurelia/plugin-gulp').default;
 const build = require('@microsoft/sp-build-web');
-
+const sass = require("@microsoft/gulp-core-build-sass");
 build.addSuppression(`Warning - [sass] The local CSS class 'ms-Grid' is not camelCase and will not be type-safe.`);
 
 var getTasks = build.rig.getTasks;
@@ -14,8 +14,23 @@ build.rig.getTasks = function () {
   return result;
 };
 
+// Please allow for libFolder configuration
+sass.default.mergeConfig({
+  preamble: '/* tslint:disable */',
+  postamble: '/* tslint:enable */',
+  sassMatch: ['src/**/*.scss', 'src/**/*.sass'],
+  useCSSModules: false,
+  warnOnCssInvalidPropertyName: true,
+  dropCssFiles: true,
+  warnOnNonCSSModules: true,
+  // Cast is needed due to autoprefixer types mismatch due to workspace install in odsp-web
+  autoprefixerOptions: {
+      overrideBrowserslist: ['> 1%', 'ie >= 11']
+  }
+});
 let aureliaGulpConventionSubTask = build.subTask('aurelia-gulp-subtask', function(gulp, buildOptions, done) {
-  gulp.src('./src/**/*.ts')
+
+gulp.src('./src/**/*.ts')
   .pipe(au2gulp()).pipe(gulp.dest("autemp")).on('finish', ()=>
   {
     gulp.src('src/**/*.html')
@@ -24,18 +39,16 @@ let aureliaGulpConventionSubTask = build.subTask('aurelia-gulp-subtask', functio
       gulp.src('autemp/**/*.css')
       .pipe(gulp.dest("lib")).on('finish', () => done());
     });  
-  });  
+  });
 });
 let aureliaConvention = build.task('aurelia-convention', aureliaGulpConventionSubTask);
 aureliaConvention.getCleanMatch = (config) =>
 {
   return ['autemp'];
 };
-build.rig.addPreBuildTask(aureliaConvention);
-//build.sass.mergeConfig({});
+let mysass = build.task('my-sass', sass.default);
+build.rig.addPreBuildTask([mysass,aureliaConvention]);
 build.initialize(gulp);
-//console.log("build");
-
 
 build.configureWebpack.mergeConfig({
   additionalConfiguration: (generatedConfiguration) => {
@@ -59,8 +72,6 @@ build.configureWebpack.mergeConfig({
       var index = generatedConfiguration.module.rules.indexOf(rule);
       generatedConfiguration.module.rules.splice(index,1);
     });
-
     return generatedConfiguration;
   }
-
 });

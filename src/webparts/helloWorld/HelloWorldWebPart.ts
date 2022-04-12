@@ -7,7 +7,7 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import { escape } from '@microsoft/sp-lodash-subset';
 
-//import styles from './HelloWorldWebPart.module.scss';
+import styles from './HelloWorldWebPart.module.scss';
 import * as strings from 'HelloWorldWebPartStrings';
 import Aurelia from 'aurelia';
 import { StandardConfiguration } from '@aurelia/runtime-html';
@@ -34,8 +34,8 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
   // This is the interesting part, above you can ignore
   public async render() {
     // This line renders the html on the page
-    //this.domElement.innerHTML = `<my-component class="${styles.helloWorld}"></my-component>`;
-    this.domElement.innerHTML = `<my-component></my-component>`;
+    // Look at readme.md to verify change in sasstask
+    this.domElement.innerHTML = `<my-component class="${styles.helloWorld}"></my-component>`;
 
     try {
 
